@@ -1,26 +1,51 @@
-import heapq
+class DSU:
+    
+    def __init__(self , n):
+        self.parent = [i for i in range(n+1)]
+        self.size = [1 for _ in range(n+1)]
+        
+    def findParent(self , u):
+        if self.parent[u] == u : 
+            return u
+        parent = self.findParent(self.parent[u])
+        self.parent[u] = parent
+        return parent
+        
+    def union(self , u , v):
+        parent_u = self.findParent(u)
+        parent_v = self.findParent(v)
+        size_u = self.size[u]
+        size_v = self.size[v]
+        
+        if size_u < size_v :
+            self.parent[parent_u] = self.findParent(parent_v)
+            self.size[parent_v] += self.size[parent_u]
+            self.parent[u] = self.findParent(v)
+        else :
+            self.parent[parent_v] = self.findParent(parent_u)
+            self.size[parent_u] += self.size[parent_v]
+            self.parent[v] = self.findParent(u)
 
 class Solution:
-    def spanningTree(self, V, adj_list):
-        mst = []
-        weight_sum = 0
-        visited = [False for _ in range(V)]
-        heap = [(0 , 0 , -1)]
-        while heap :
-            dist , root , parent = heapq.heappop(heap)
-            if visited[root] :
-                continue
-            visited[root] = True
-            if parent != -1 :
-                mst.append((parent, root))
-            weight_sum += dist
-            for node , weight in adj_list[root] :
-                if visited[node] :
-                    continue
-                heapq.heappush(heap , (weight , node ,  root))
-        return weight_sum
-            
-
+    def spanningTree(self, V, adj):
+        edges = []
+        for i in range(V):
+            l = adj[i]
+            for j in l:
+                node = j[0]
+                dist = j[1]
+                edges.append((i , node , dist))
+        min_sum = 0
+        edges.sort(key = lambda x : x[2])
+        min_sum = 0 
+        dsu = DSU(V)
+        for  start , end , dist in edges :
+            if dsu.findParent(start) != dsu.findParent(end) :
+                min_sum += dist
+                dsu.union(start , end)
+        return min_sum
+    
+    
 
 #{ 
  # Driver Code Starts
