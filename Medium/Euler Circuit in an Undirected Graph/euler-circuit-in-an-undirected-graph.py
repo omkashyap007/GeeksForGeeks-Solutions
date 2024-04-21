@@ -28,29 +28,27 @@ class DSU :
         return 1
 
 class Solution:
-	def isEularCircuitExist(self, v, adj):
-	   # for i in range(adj):
-	   #     if len(adj[i])%2 != 0 :
-	   #         return False
-	   # return True
-	   
-	    edges = []
-	    for i in range(len(adj)):
-	        edges.extend([(i , j) for j in adj[i] if i < j ])
-	    if len(edges) == 0 : 
-	        return True
-	    dsu = DSU(v)
-	    for i in range(len(edges)):
-	        first = edges[i][0]
-	        second = edges[i][1]
-	        if dsu.findParent(first) == dsu.findParent(second):
-	            if i == len(adj) - 1 :
-	                return True
-	            else :
-	                return False
-	        else :
-	            dsu.union(first , second)
-	    return False
+    def isEularCircuitExist(self, v, adj):
+        edges = []
+        for i in range(len(adj)):
+            edges.extend([(i , j) for j in adj[i] if i < j ])
+        if len(edges) == 0 : 
+            return True
+        dsu = DSU(v)
+        for i in range(len(edges)):
+            first = edges[i][0]
+            second = edges[i][1]
+            if dsu.findParent(first) == dsu.findParent(second):
+                if i == len(adj) - 1 :
+                    return True
+                else :
+                    return False
+            else :
+                dsu.union(first , second)
+        return False
+
+
+
 
 
 #{ 
@@ -58,19 +56,19 @@ class Solution:
 #Initial Template for python3
 
 if __name__ == '__main__':
-	T=int(input())
-	for i in range(T):
-		V, E = map(int, input().split())
-		adj = [[] for i in range(V)]
-		for _ in range(E):
-			u, v = map(int, input().split())
-			adj[u].append(v)
-			adj[v].append(u)
-		obj = Solution()
-		ans = obj.isEularCircuitExist(V, adj)
-		if(ans):
-			print("1")
-		else:
-			print("0")
+    T = int(input())
+    for i in range(T):
+        V, E = map(int, input().split())
+        adj = [[] for i in range(V)]
+        for _ in range(E):
+            u, v = map(int, input().split())
+            adj[u].append(v)
+            adj[v].append(u)
+        obj = Solution()
+        ans = obj.isEularCircuitExist(V, adj)
+        if (ans):
+            print("1")
+        else:
+            print("0")
 
 # } Driver Code Ends
