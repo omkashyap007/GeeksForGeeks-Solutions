@@ -4,13 +4,17 @@ class Solution:
     def dijkstra(self, V, adj_list, source):
         distances = [float("inf") for _ in range(V)]
         heap = [(0,source)]
+        visited = [False for _ in range(V)]
         distances[source] = 0
         while heap :
             root_distance , root = heapq.heappop(heap)
+            if visited[root] :
+                continue
             for node , node_distance in adj_list[root] :
                 if root_distance + node_distance < distances[node] :
                     distances[node] = root_distance + node_distance
                     heapq.heappush(heap , (root_distance + node_distance , node))
+            visited[root] = True
         return distances    
     
 
